@@ -7,6 +7,3 @@ RUN go get -d -v ./...
 RUN go install -v ./...
 
 CMD ["app"]
-
-docker build -t my-go-app .
-docker run my-go-app
