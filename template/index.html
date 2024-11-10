@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Titulo}}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row bg-dark text-white text-center py-1">
+            <div class="col">
+                <h1>{{.Titulo}}</h1>
+            </div>
+        </div><!--topo-->
+        
+        <div class="row bg-light py-4">
+            <div class="col">
+            <p>Criar um novo deploy</p>
+                <form action="/create" method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="item" placeholder="Nome do Serviço" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Criar</button>
+                        </div>
+                    </div>
+                </form>
+            <h2>Lista de Deploy</h2>
+                <ul class="list-group">
+                    {{if .Items}}
+                        {{range .Items}}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{.Nome}}
+                                <span>
+                                    <a href="#" class="text-primary mr-2"><i class="fas fa-redo"></i></a>
+                                    <a href="#" class="text-primary mr-2"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
+                                </span>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        <li class="list-group-item text-center">Não há nenhum deploy cadastrado.</li>
+                    {{end}}
+                </ul>
+            </div>
+        </div><!--corpo-->
+        
+        <div class="row bg-dark text-white text-center py-1 fixed-bottom">
+            <div class="col">
+                <p>Todos os direitos reservados &copy; 2024 Desenvolvido por <a href="https://studiofreak.com.br/" target="_blank">StudioFreak</a></p>
+            </div>
+        </div><!--rodape-->
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

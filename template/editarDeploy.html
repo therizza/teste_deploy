@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Titulo}}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row bg-dark text-white text-center py-1">
+            <div class="col">
+                <h1>{{.Titulo}}</h1>
+            </div>
+        </div><!--topo-->
+        
+        <div class="row bg-light py-4">
+            <div class="col-md-6">
+                <p>Dados do Deploy.</p>
+                <form>
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" class="form-control" id="nome" placeholder="Digite o nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="urlGit">URL do Git</label>
+                        <input type="url" class="form-control" id="urlGit" placeholder="Digite a URL do Git">
+                    </div>
+                    <div class="form-group">
+                        <label for="privacidade">Tipo de Repositório</label>
+                        <select class="form-control" id="privacidade" onchange="toggleTokenField()">
+                            <option value="publico">Público</option>
+                            <option value="privado">Privado</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="tokenField" style="display: none;">
+                        <label for="token">Token</label>
+                        <input type="text" class="form-control" id="token" placeholder="Digite o token">
+                    </div>
+                    <script>
+                        function toggleTokenField() {
+                            var privacidade = document.getElementById('privacidade').value;
+                            var tokenField = document.getElementById('tokenField');
+                            if (privacidade === 'privado') {
+                                tokenField.style.display = 'block';
+                            } else {
+                                tokenField.style.display = 'none';
+                            }
+                        }
+                    </script>
+                    <div class="form-group">
+                        <label for="porta">Porta</label>
+                        <input type="number" class="form-control" id="porta" placeholder="Digite a porta">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form id="dynamicForm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p>Crie e salve as variáveis de ambiente.</p>
+                        <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            <label for="nome1">Nome</label>
+                            <input type="text" class="form-control" id="nome1" name="nome1" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="chave1">Chave</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control chave" id="chave1" name="chave1" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text toggle-visibility">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-success" id="addField">
+                                <i class="fas fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            let fieldCount = 1;
+
+            document.getElementById('addField').addEventListener('click', function() {
+                fieldCount++;
+                const formGroup = document.createElement('div');
+                formGroup.className = 'form-group row';
+                formGroup.innerHTML = `
+                    <div class="col-md-5">
+                        <label for="nome${fieldCount}">Nome</label>
+                        <input type="text" class="form-control" id="nome${fieldCount}" name="nome${fieldCount}" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="chave${fieldCount}">Chave</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control chave" id="chave${fieldCount}" name="chave${fieldCount}" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text toggle-visibility">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger removeField">
+                            <i class="fas fa-minus"></i> Remover
+                        </button>
+                    </div>
+                `;
+                document.getElementById('dynamicForm').appendChild(formGroup);
+
+                formGroup.querySelector('.removeField').addEventListener('click', function() {
+                    formGroup.remove();
+                });
+
+                formGroup.querySelector('.toggle-visibility').addEventListener('click', function() {
+                    const input = formGroup.querySelector('.chave');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.innerHTML = '<i class="fas fa-unlock"></i>';
+                    } else {
+                        input.type = 'password';
+                        this.innerHTML = '<i class="fas fa-lock"></i>';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.toggle-visibility').forEach(function(element) {
+                element.addEventListener('click', function() {
+                    const input = this.closest('.input-group').querySelector('.chave');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.innerHTML = '<i class="fas fa-unlock"></i>';
+                    } else {
+                        input.type = 'password';
+                        this.innerHTML = '<i class="fas fa-lock"></i>';
+                    }
+                });
+            });
+        </script>
+        
+        <div class="row bg-dark text-white text-center py-1 fixed-bottom">
+            <div class="col">
+                <p>Todos os direitos reservados &copy; 2024 Desenvolvido por <a href="https://studiofreak.com.br/" target="_blank">StudioFreak</a></p>
+            </div>
+        </div><!--rodape-->
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
