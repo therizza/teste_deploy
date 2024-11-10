@@ -4,8 +4,8 @@ WORKDIR /go/src/app
 
 COPY . .
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+RUN go mod tidy
+RUN go build -o /go/bin/app .
 
 EXPOSE 8080
 
